@@ -445,6 +445,7 @@ a{
 		font-weight: 800;
 	}
 
+	.mutedtxt{color: var(--clr-text-muted) !important;}
 	.modetxt{color: var(--clr-text) !important;}
 	.modealttxt{color: var(--clr-alttext) !important;}
 	.panelbg{background-color: var(--clr-panelbg);}
@@ -465,3 +466,4 @@ a{
 	.bordertrans{border-color: transparent !important;}
 
 	.normalfont{font-family: Arial, calibri, Helvetica, sans-serif !important;}
+	.ignored{pointer-events: none;}

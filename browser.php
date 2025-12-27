@@ -2,13 +2,15 @@
 	// defaults
 	$default_methods = ['post','get'];
 	$default_hide = ['.git','_help'];
+	$default_dir = 'not here';
 ?>
 
 <?php
 	$allowed_methods = isset($allowed_methods) ? $allowed_methods : $default_methods;
 	$show_files = isset($show_files) ? $show_files : false;
 	$tohide = isset($tohide) ? $tohide : $default_hide;
-	$dir = isset($dir) ? $dir : './';
+	$dirname = isset($folder_name) ? $folder_name : basename(__DIR__);
+	$dir = isset($dir) ? $dir : $default_dir;
 ?>
 
 <?php
@@ -19,7 +21,13 @@
 	$foundfyls = [];
 
 	if(!is_dir($dir)){
-		exit('invalid directory');
+		if($reqmeth == 'get'){
+			exit('invalid directory');
+		} else {
+			// $foundfyls[] = 'invalid directory';
+			// http_response_code(200);
+			exit('directory doesnt exist');
+		}
 	}
 
 	$drf = opendir($dir);
@@ -57,7 +65,7 @@
 	<link rel="stylesheet" href="/lister/css/coryG_base.css">
 	<link rel="stylesheet" href="/lister/css/w3.css">
 	<link rel="stylesheet" href="/lister/css/iconic.css">
-	<title>Your projects</title>
+	<title>Items in <?=$dirname?></title>
 	<meta name="viewport" content="initial-scale=1,width-device-width">
 
 	<script src="/lister/js/app.js"></script>
@@ -70,36 +78,22 @@
 		<div class="links">
 			<div class="spacy-sm flow gap-sm" data-role="headpart">
 				<div class="hed">
-					<h1>Your Projects</h1>
-					<span>showing <b class="themetxt">5</b> of <b>5</b> items</span>
+					<h1>Items in <b><?=$dirname?></b></h1>
+					<span>showing <b class="themetxt" data-subrole="seen_counter">5</b> of <b data-role="all_counter">5</b> items</span>
 				</div>
 				<div class="searchbox">
-					<input type="search" id="filter" oninput="filterlinks()" placeholder="search for a project ...">
+					<input type="search" id="filter" oninput="filterlinks()" placeholder="search <?=$dirname?> ...">
 				</div>
 			</div>
 
 			<div class="spacy-sm" data-role="fyllinks">
-				<?php
-					// Get the current directory
-					$dir = './';
+				<a style="display:none" data-role="placeholder" class="w3-center mutedtxt ignored"><i>no files found</i></a>
 
-					// Check if the directory exists and is readable
-					if (is_dir($dir)) {
-						// Open the directory
-						if ($dh = opendir($dir)) {
-							// Loop through all files and directories
-							while (($folder = readdir($dh)) !== false) {
-								// Filter out '.' and '..' and only display directories
-								if ($folder != '.' && $folder != '..' && is_dir($dir . $folder)) {
-									// Display the folder as a clickable link
-									echo "<a class=\"\" target=\"blank\" href=\"$folder\">$folder</a>";
-								}
-							}
-							// Close the directory handle
-							closedir($dh);
-						}
-					} else {
-						echo "Directory does not exist.";
+				<?php
+					// SSR the links
+
+					foreach($foundfyls as $f){
+						echo "<a href=\"$f\" data-role='fyllink'>$f</a>";
 					}
 				?>
 			</div>
@@ -131,11 +125,13 @@
 		const serverlog = <?=json_encode($s_log)?>;
 		// */
 
-		let _thelist = [];
+		let _thelist = <?=json_encode($foundfyls)?>;
 
 		var npt = document.querySelector('#filter');
-		var linksguy = document.querySelector('.links');
-		var links = linksguy.querySelectorAll('a');
+		var linksguy = document.querySelector('[data-role="fyllinks"]');
+		var links = linksguy.querySelectorAll('[data-role="fyllink"]');
+
+		// const ui_seen_counter = document.
 
 		function filterlinks() {
 			let needle = npt.value;

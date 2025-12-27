@@ -19,4 +19,4 @@ RewriteRule ^([^/\.]+)/?$ $1.php [L,QSA]
 # RewriteRule ^ %1.php [L,QSA]
 
 # 5) the 404 page
-ErrorDocument 404 /404.php
+# ErrorDocument 404 /404.php
