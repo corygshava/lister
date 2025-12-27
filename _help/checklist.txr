@@ -1,4 +1,6 @@
 [done]
+add the POST option
+    it sends JSON back when accessed this way
 
 [ongoing]
 
@@ -6,8 +8,6 @@
 revamp ui layout
     make it have the reusable structure i've come to love in all my latest works
 introduce uiops
-add the POST option
-    it sends JSON back when accessed this way
 add the CORS fix
     so that i can access it from a mere html page
 add the runtime generation

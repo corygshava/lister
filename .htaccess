@@ -1,0 +1,22 @@
+# Put this in your web root (.htaccess)
+RewriteEngine On
+
+# 1) If the requested path is a real file or directory, do nothing
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2) Map single-segment, extensionless paths to same-name .php
+#    /category   -> /category.php
+#    /shop       -> /shop.php
+#    /homewear   -> /homewear.php
+#    (also works with an optional trailing slash: /category/)
+
+# 3) reroutes to the php file unconditionaly
+RewriteRule ^([^/\.]+)/?$ $1.php [L,QSA]
+
+# 4) reroutes only if the php file exists (causes errors for existing stuff, dont use unless fixed)
+# RewriteRule ^ %1.php [L,QSA]
+
+# 5) the 404 page
+ErrorDocument 404 /404.php
