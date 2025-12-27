@@ -1,8 +1,13 @@
+<?php
+    // this is the slightly modified basic version of the applet, preserved to see how much ive grown since then
+    // also about 90% oof it was vibe coded with chatty so the only thing i have credit for is the idea and maybe the styling
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="lister/css/styles.css">
-    <link rel="stylesheet" href="lister/css/w3.css">
+    <link rel="stylesheet" href="/lister/css/styles.css">
+    <link rel="stylesheet" href="/lister/css/w3.css">
     <title>Your projects</title>
     <meta name="viewport" content="initial-scale=1,width-device-width">
 </head>
@@ -58,11 +63,9 @@
 	        	} else {
 	        		el.style.display = el.textContent.toUpperCase().includes(needle.toUpperCase()) ? 'block' : 'none';
 	        	}
-	        }
-	        );
+	        });
         }
     </script>
-
 </div>
 </body>
 </html>
