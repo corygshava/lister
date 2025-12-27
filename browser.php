@@ -87,7 +87,7 @@
 			</div>
 
 			<div class="spacy-sm" data-role="fyllinks">
-				<a style="display:none" data-role="placeholder" class="w3-center mutedtxt ignored"><i>no files found</i></a>
+				<a style="display:none;border:none;" data-role="placeholder" class="w3-center mutedtxt ignored"><i>no files found</i></a>
 
 				<?php
 					// SSR the links
@@ -139,6 +139,7 @@
 		function filterlinks() {
 			let needle = npt.value;
 			let found = 0;
+			let place = linksguy.querySelector('[data-role="placeholder"]');
 
 			links.forEach(el => {
 				let isfound = el.textContent.toUpperCase().includes(needle.toUpperCase());
@@ -152,6 +153,15 @@
 				}
 			});
 
+			if(place != undefined){
+				place.style.display = found == 0 ? "block" : "none";
+				if(found == 0){
+					place.innerText = `no matches found for \`${needle}\``;
+				} else {
+					place.innerText = "no links found";
+				}
+			}
+
 			ui_seen_counter.innerText = found;
 		}
 
@@ -160,6 +170,8 @@
 			.then(r => r.json())
 			.then(d => {
 				_thelist = d;
+				console.log(d);
+				renderlinks();
 			})
 			.catch(err => {
 				alert_danger('an error happened: ' + err);
