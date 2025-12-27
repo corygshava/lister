@@ -6,6 +6,7 @@
 
 <?php
 	$allowed_methods = isset($allowed_methods) ? $allowed_methods : $default_methods;
+	$show_files = isset($show_files) ? $show_files : false;
 	$tohide = isset($tohide) ? $tohide : $default_hide;
 	$dir = isset($dir) ? $dir : './';
 ?>
@@ -31,7 +32,13 @@
 			continue;
 		}
 
-		$foundfyls[] = $fyl;
+		if($show_files){
+			$foundfyls[] = $fyl;
+		} else if(is_dir($dir.$fyl)){
+			$foundfyls[] = $fyl;
+		} else {
+			continue;
+		}
 	}
 
 	closedir($drf);
@@ -46,41 +53,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="lister/css/styles.css">
-	<link rel="stylesheet" href="lister/css/w3.css">
+	<link rel="stylesheet" href="/lister/css/styles.css">
+	<link rel="stylesheet" href="/lister/css/coryG_base.css">
+	<link rel="stylesheet" href="/lister/css/w3.css">
+	<link rel="stylesheet" href="/lister/css/iconic.css">
 	<title>Your projects</title>
 	<meta name="viewport" content="initial-scale=1,width-device-width">
+
+	<script src="/lister/js/app.js"></script>
+	<script src="/lister/js/SuperScript.js"></script>
+	<script src="/lister/js/toappend.js"></script>
+	<script src="/lister/js/customalerter.js"></script>
 </head>
 <body>
+	<div class="maincontent">
+		<div class="links">
+			<div class="spacy-sm flow gap-sm" data-role="headpart">
+				<div class="hed">
+					<h1>Your Projects</h1>
+					<span>showing <b class="themetxt">5</b> of <b>5</b> items</span>
+				</div>
+				<div class="searchbox">
+					<input type="search" id="filter" oninput="filterlinks()" placeholder="search for a project ...">
+				</div>
+			</div>
 
-<div class="links">
-	<h1>Your Projects</h1>
-	<div class="search">
-		<input type="text" id="filter" oninput="filterlinks()" placeholder="search for a project ...">
-	</div>
-	<?php
-		// Get the current directory
-		$dir = './';
+			<div class="spacy-sm" data-role="fyllinks">
+				<?php
+					// Get the current directory
+					$dir = './';
 
-		// Check if the directory exists and is readable
-		if (is_dir($dir)) {
-			// Open the directory
-			if ($dh = opendir($dir)) {
-				// Loop through all files and directories
-				while (($folder = readdir($dh)) !== false) {
-					// Filter out '.' and '..' and only display directories
-					if ($folder != '.' && $folder != '..' && is_dir($dir . $folder)) {
-						// Display the folder as a clickable link
-						echo "<a class=\"\" target=\"blank\" href=\"$folder\">$folder</a>";
+					// Check if the directory exists and is readable
+					if (is_dir($dir)) {
+						// Open the directory
+						if ($dh = opendir($dir)) {
+							// Loop through all files and directories
+							while (($folder = readdir($dh)) !== false) {
+								// Filter out '.' and '..' and only display directories
+								if ($folder != '.' && $folder != '..' && is_dir($dir . $folder)) {
+									// Display the folder as a clickable link
+									echo "<a class=\"\" target=\"blank\" href=\"$folder\">$folder</a>";
+								}
+							}
+							// Close the directory handle
+							closedir($dh);
+						}
+					} else {
+						echo "Directory does not exist.";
 					}
-				}
-				// Close the directory handle
-				closedir($dh);
-			}
-		} else {
-			echo "Directory does not exist.";
-		}
-	?>
+				?>
+			</div>
+
+			<div data-role="options" class="flow centroid">
+				<div class="stuff gap-sm spacy-sm">
+					<div class="flowline center gap-tn">
+						<input type="checkbox" id="npt_newtab">
+						<label for="npt_newtab"> open in new tab</label>
+					</div>
+					<div>
+						<a class="btn primary" href="../"><i class="icon-folder"></i></a>
+						<a class="btn primary" href="#"><i class="icon-refresh"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script>
 		/*
@@ -124,7 +161,5 @@
 			})
 		}
 	</script>
-
-</div>
 </body>
 </html>

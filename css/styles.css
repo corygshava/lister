@@ -1,45 +1,84 @@
 :root{
-    --bordercol: #222;
-    --bgcolor: #0e0e0e;
-    --textcol: #fff;
-    --themecolor: #0022ff;
+    --bordercol: var(--clr-panelbg);
+    --bgcolor: var(--clr-bg);
+    --textcol: var(--clr-text);
+    --themecolor: var(--themecolor);
+    --widthlimit: 900px;
 }
 *{
     box-sizing: border-box;
     transition: 0.3s ease-out;
 }
 body{
-    background-color: var(--bgcolor);
-    color: #fff;
-}
-.search input{
-    display: block;
-    width: 100%;
-    margin: 25px auto;
-    padding: 12px 20px;
-    background: var(--bgcolor);
-    border: 1px solid var(--bordercol);
+    background-color: var(--bgcolor) !important;
     color: var(--textcol);
-}
-.search input:focus{
-    outline: none;
-    border: 2px solid var(--themecolor);
-}
-.links{
     display: flex;
     flex-direction: column;
-    width: 90%;
-    min-width: 300px;
-    margin: 45px auto;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
 }
-a{
+
+.maincontent{
+    display: flex;
+    flex-direction: column;
+    width: 96vw;
+    min-height: 100vh;
+    max-width: var(--widthlimit);
+    position: relative;
+}
+.maincontent [data-role="headpart"]{
+    /* background-color: red; */
+    padding: var(--size-sm);
+}
+[data-role="headpart"] .searchbox input{
+    padding: 12px 16px;
+    width: 100%;
+    background-color: transparent;
+    color: var(--textcol);
+    border: 1px solid var(--bordercol);
+}
+[data-role="headpart"] .searchbox input:focus{
+    border-color: var(--themecolor);
+    outline: none;
+}
+
+[data-role="fyllinks"]{
+    padding: var(--size-sm);
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 64px 0  ;
+}
+[data-role="fyllinks"] a{
+    padding: 12px;
     display: inline-block;
-    text-decoration: none;
-    padding: 15px 20px;
     border-bottom: 1px solid var(--bordercol);
 }
-a:hover{
-    background-color: #111;
+[data-role="fyllinks"] a:last-child{
+    border: none;
+}
+[data-role="fyllinks"] a:hover{
     color: var(--themecolor);
-/*    text-shadow: 2px 2px 20px rgba(0, 255, 85, 0.664);*/
+    border-color: var(--themecolor);
+}
+
+[data-role="options"]{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+[data-role="options"] .stuff{
+    width: 96vw;
+    max-width: var(--widthlimit);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* background-image: linear-gradient(90deg,transparent,var(--bgcolor)); */
+    background-color: var(--bgcolor);
+    border-top: 1px solid var(--bordercol);
+}
+[data-role="options"] .stuff>*{
+    pointer-events: all;
 }
