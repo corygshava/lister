@@ -106,7 +106,7 @@
 					</div>
 					<div>
 						<a class="btn primary" href="../"><i class="icon-folder"></i></a>
-						<a class="btn primary" href="#"><i class="icon-refresh"></i></a>
+						<a class="btn primary" href="#" data-role="refreshbtn"><i class="icon-refresh"></i></a>
 					</div>
 				</div>
 			</div>
@@ -133,6 +133,8 @@
 
 		const ui_seen_counter = document.querySelector('[data-subrole="seen_counter"]');
 		const ui_all_counter = document.querySelector('[data-subrole="all_counter"]');
+		const ui_btn_refresh = document.querySelector('[data-role="refreshbtn"]');
+		const ui_npt_newtab = document.querySelector('#npt_newtab');
 
 		function filterlinks() {
 			let needle = npt.value;
@@ -160,9 +162,49 @@
 				_thelist = d;
 			})
 			.catch(err => {
-				alert('an error happened: ' + err);
+				alert_danger('an error happened: ' + err);
 			})
 		}
+
+		async function refreshlinks() {
+			try{
+				alert_info('reloading list');
+
+				let request = await fetch('./',{method: 'post'});
+				let gotten = await request.json();
+				_thelist = gotten;
+			} catch(err){
+				alert_danger(err);
+			}
+		}
+
+		function renderlinks() {
+			linksguy.innerHTML = `<a style="display:none" data-role="placeholder" class="w3-center mutedtxt ignored"><i>no files found</i></a>`;
+
+			_thelist.forEach(f => {
+				linksguy.innerHTML += `<a class='w3-animate-opacity' href=\"${f}\" data-role='fyllink'>${f}</a>`;
+			});
+
+			links = linksguy.querySelectorAll('[data-role="fyllink"]');
+		}
+
+		ui_btn_refresh.addEventListener('click',() => {
+			refreshlinks()
+			.then(w => {renderlinks();})
+			.catch(err => {alert_danger(err);})
+		})
+
+		ui_npt_newtab.addEventListener('change',() => {
+			chk = ui_npt_newtab.checked;
+
+			links.forEach(l => {
+				if(chk){
+					l.setAttribute('target','blank');
+				} else {
+					l.removeAttribute('target');
+				}
+			})
+		})
 	</script>
 </body>
 </html>
