@@ -3,7 +3,7 @@
     $tohide = [
         '.git'
     ];
-    $dir = './'.substr(str_shuffle('abcdefghijklmnopqrstuvwxyz1234567890_'),0,8);                            // location of the folder
+    $dir = './'.substr(str_shuffle('abcdefghijklmnopqrstuvwxyz1234567890_'),0,8);   // returns a mess that doesnt exist
     $folder_name = basename(__DIR__);       // the title of the folder
 
     // /*

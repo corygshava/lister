@@ -9,7 +9,7 @@
 	$allowed_methods = isset($allowed_methods) ? $allowed_methods : $default_methods;
 	$show_files = isset($show_files) ? $show_files : false;
 	$tohide = isset($tohide) ? $tohide : $default_hide;
-	$dirname = isset($folder_name) ? $folder_name : basename(__DIR__);
+	$dirname = isset($folder_name) ? $folder_name : basename('./');
 	$dir = isset($dir) ? $dir : $default_dir;
 ?>
 
@@ -79,7 +79,7 @@
 			<div class="spacy-sm flow gap-sm" data-role="headpart">
 				<div class="hed">
 					<h1>Items in <b><?=$dirname?></b></h1>
-					<span>showing <b class="themetxt" data-subrole="seen_counter">5</b> of <b data-role="all_counter">5</b> items</span>
+					<span>showing <b class="themetxt" data-subrole="seen_counter"><?=count($foundfyls)?></b> of <b data-role="all_counter"><?=count($foundfyls)?></b> items</span>
 				</div>
 				<div class="searchbox">
 					<input type="search" id="filter" oninput="filterlinks()" placeholder="search <?=$dirname?> ...">
@@ -93,7 +93,7 @@
 					// SSR the links
 
 					foreach($foundfyls as $f){
-						echo "<a href=\"$f\" data-role='fyllink'>$f</a>";
+						echo "<a class='w3-animate-opacity' href=\"$f\" data-role='fyllink'>$f</a>";
 					}
 				?>
 			</div>
@@ -131,19 +131,26 @@
 		var linksguy = document.querySelector('[data-role="fyllinks"]');
 		var links = linksguy.querySelectorAll('[data-role="fyllink"]');
 
-		// const ui_seen_counter = document.
+		const ui_seen_counter = document.querySelector('[data-subrole="seen_counter"]');
+		const ui_all_counter = document.querySelector('[data-subrole="all_counter"]');
 
 		function filterlinks() {
 			let needle = npt.value;
+			let found = 0;
 
 			links.forEach(el => {
+				let isfound = el.textContent.toUpperCase().includes(needle.toUpperCase());
+
 				if(npt.value == ''){
 					el.style.display = 'block';
+					found = links.length;
 				} else {
-					el.style.display = el.textContent.toUpperCase().includes(needle.toUpperCase()) ? 'block' : 'none';
+					el.style.display = isfound ? 'block' : 'none';
+					found += isfound ? 1 : 0;
 				}
-			}
-			);
+			});
+
+			ui_seen_counter.innerText = found;
 		}
 
 		function getlist() {

@@ -1,7 +1,7 @@
 :root {
-	--themecolor: #0022ff;
-	--seccolor: rgb(2, 107, 255);
-	--darkcolor: #0f0284;
+	--themecolor: rgb(2, 107, 255);
+	--seccolor: #3a5efd;
+	--darkcolor: #0022ff;
 	--clr-theme-dark: var(--darkcolor);
 	--clr-bg: #0e0e0e;
 	/* --clr-bg: red; */
